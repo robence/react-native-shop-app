@@ -1,0 +1,15 @@
+{
+  "extends": ["@react-native-community", "plugin:prettier/recommended"],
+  "parser": "babel-eslint",
+  "plugins": ["@react-native-community"],
+  "rules": {
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".json", ".native.js"]
+      }
+    }
+  }
+}
