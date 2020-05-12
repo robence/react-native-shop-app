@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, Text } from 'react-native';
 import { useSelector } from 'react-redux';
+import ProductItem from '../../components/shop/ProductItem';
 
 export default function ProductsOverviewScreen() {
   const products = useSelector((state) => state.products.availableProducts);
@@ -8,7 +9,7 @@ export default function ProductsOverviewScreen() {
   return (
     <FlatList
       data={products}
-      renderItem={({ item }) => <Text>{item.title}</Text>}
+      renderItem={({ item }) => <ProductItem item={item} />}
     />
   );
 }
