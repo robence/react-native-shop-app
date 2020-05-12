@@ -4,9 +4,11 @@ import { StyleSheet, View, Text, Image, Button } from 'react-native';
 export default function ProductItem({ item, onViewDetail, onCartDetail }) {
   const { title, price, imageUrl } = item;
 
+  console.log(imageUrl);
+
   return (
     <View style={styles.product}>
-      <Image style={styles.image} source={imageUrl} />
+      <Image style={styles.image} source={{ uri: imageUrl }} />
       <Text style={styles.title}>{title}</Text>
 
       <Text style={styles.price}>{price.toFixed(2)}</Text>
