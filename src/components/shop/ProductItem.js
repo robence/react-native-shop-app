@@ -1,29 +1,57 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, Button } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Button,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import Colors from '../../constants/Colors';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 export default function ProductItem({ item, onViewDetail, onCartDetail }) {
-  const { title, price, imageUrl } = item;
+  const { title, price, imageUrl, id } = item;
 
   const navigation = useNavigation();
 
+  const goToDetails = () =>
+    navigation.navigate('ProductDetailScreen', { id, title });
+
+  let TouchableCmp = TouchableOpacity;
+
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
+
   return (
     <View style={styles.product}>
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: imageUrl }} />
-      </View>
-      <View style={styles.detail}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.price}>{price.toFixed(2)}</Text>
-      </View>
-      <View style={styles.actions}>
-        <Button
-          color={Colors.primary}
-          title="View Details"
-          onPress={() => navigation.navigate('ProductDetailScreen')}
-        />
-        <Button color={Colors.primary} title="To Cart" onPress={onCartDetail} />
+      <View style={styles.touchable}>
+        <TouchableCmp activeOpacity={0.6} onPress={goToDetails} useForeground>
+          <View>
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={{ uri: imageUrl }} />
+            </View>
+            <View style={styles.detail}>
+              <Text style={styles.title}>{title}</Text>
+              <Text style={styles.price}>{price.toFixed(2)}</Text>
+            </View>
+            <View style={styles.actions}>
+              <Button
+                color={Colors.primary}
+                title="View Details"
+                onPress={goToDetails}
+              />
+              <Button
+                color={Colors.primary}
+                title="To Cart"
+                onPress={onCartDetail}
+              />
+            </View>
+          </View>
+        </TouchableCmp>
       </View>
     </View>
   );
@@ -40,6 +68,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 300,
     margin: 20,
+  },
+  touchable: {
+    overflow: 'hidden',
+    borderRadius: 10,
   },
   imageContainer: {
     width: '100%',

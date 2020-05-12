@@ -28,9 +28,9 @@ export default function ProductsNavigator() {
       <Stack.Screen
         name="ProductDetailScreen"
         component={ProductDetailScreen}
-        options={{
-          title: 'Product Detail',
-        }}
+        options={({ route }) => ({
+          title: route.params.title,
+        })}
       />
     </Stack.Navigator>
   );
