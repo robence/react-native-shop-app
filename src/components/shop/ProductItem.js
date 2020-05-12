@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Button } from 'react-native';
 import Colors from '../../constants/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ProductItem({ item, onViewDetail, onCartDetail }) {
   const { title, price, imageUrl } = item;
 
-  console.log(imageUrl);
+  const navigation = useNavigation();
 
   return (
     <View style={styles.product}>
@@ -20,7 +21,7 @@ export default function ProductItem({ item, onViewDetail, onCartDetail }) {
         <Button
           color={Colors.primary}
           title="View Details"
-          onPress={onViewDetail}
+          onPress={() => navigation.navigate('ProductDetailScreen')}
         />
         <Button color={Colors.primary} title="To Cart" onPress={onCartDetail} />
       </View>
