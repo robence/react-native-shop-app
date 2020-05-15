@@ -16,6 +16,12 @@ export default function ProductsNavigator() {
           backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
         },
         headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+        headerTitleStyle: {
+          fontFamily: 'open-sand-bold',
+        },
+        headerBackTitleStyle: {
+          fontFamily: 'open-sans',
+        },
       }}
     >
       <Stack.Screen
