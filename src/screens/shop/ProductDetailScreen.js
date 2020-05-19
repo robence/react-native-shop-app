@@ -7,20 +7,29 @@ import {
   ScrollView,
   Button,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedProduct } from '../../store/selectors';
 import Colors from '../../constants/Colors';
-
+import { bindActionCreators } from 'redux';
+import * as CartActions from '../../ducks/cartDuck';
 export default function ProductDetailScreen({ navigation, route }) {
   const { id } = route.params;
 
   const selectedProduct = useSelector(getSelectedProduct(id));
+  const dispatch = useDispatch();
+  const cartActions = bindActionCreators(CartActions, dispatch);
 
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
       <View style={styles.actions}>
-        <Button color={Colors.primary} title="Add to Cart" onPress={() => {}} />
+        <Button
+          color={Colors.primary}
+          title="Add to Cart"
+          onPress={() => {
+            cartActions.addToCart(selectedProduct);
+          }}
+        />
       </View>
       <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
       <Text style={styles.description}>{selectedProduct.description}</Text>

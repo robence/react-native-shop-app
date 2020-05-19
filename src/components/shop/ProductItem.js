@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
-export default function ProductItem({ item, onViewDetail, onCartDetail }) {
+export default function ProductItem({ item, onViewDetail, onAddToCart }) {
   const { title, price, imageUrl, id } = item;
 
   const navigation = useNavigation();
@@ -46,8 +46,8 @@ export default function ProductItem({ item, onViewDetail, onCartDetail }) {
               />
               <Button
                 color={Colors.primary}
-                title="To Cart"
-                onPress={onCartDetail}
+                title="Add To Cart"
+                onPress={onAddToCart}
               />
             </View>
           </View>
