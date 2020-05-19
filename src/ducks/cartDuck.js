@@ -10,11 +10,11 @@ const initialState = {
 export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_TO_CART:
+      // eslint-disable-next-line no-case-declarations
       const { id, price, title } = action.product;
 
-      const currentItem = state.items[id];
-      if (currentItem) {
-        const { quantity, sum } = currentItem;
+      if (state.items[id]) {
+        const { quantity, sum } = state.items[id];
         const updatedCartItem = new CartItem(
           quantity + 1,
           price,
@@ -24,8 +24,7 @@ export default function cartReducer(state = initialState, action) {
         return updateCartItem(state, id, updatedCartItem);
       }
 
-      const newCartItem = new CartItem(1, price, title, price);
-      return updateCartItem(state, id, newCartItem);
+      return updateCartItem(state, id, new CartItem(1, price, title, price));
 
     default:
       return state;
@@ -45,5 +44,5 @@ function updateCartItem(state, id, newItem) {
 
 export const addToCart = (product) => ({
   type: ADD_TO_CART,
-  product: product,
+  product,
 });

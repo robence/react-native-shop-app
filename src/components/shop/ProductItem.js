@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import Colors from '../../constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+import Colors from '../../constants/Colors';
 
 export default function ProductItem({ item, onViewDetail, onAddToCart }) {
   const { title, price, imageUrl, id } = item;

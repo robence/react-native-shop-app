@@ -1,5 +1,9 @@
 {
-  "extends": ["@react-native-community", "plugin:prettier/recommended"],
+  "extends": [
+    "airbnb",
+    "@react-native-community",
+    "plugin:prettier/recommended"
+  ],
   "parser": "babel-eslint",
   "plugins": ["@react-native-community"],
   "rules": {

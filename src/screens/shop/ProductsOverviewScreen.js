@@ -1,10 +1,10 @@
 import React from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { bindActionCreators } from 'redux';
 import * as CartActions from '../../ducks/cartDuck';
 import ProductItem from '../../components/shop/ProductItem';
-import { bindActionCreators } from 'redux';
 
 export default function ProductsOverviewScreen() {
   const products = useSelector((state) => state.products.availableProducts);

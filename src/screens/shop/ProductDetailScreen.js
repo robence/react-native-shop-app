@@ -8,10 +8,11 @@ import {
   Button,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { getSelectedProduct } from '../../store/selectors';
 import Colors from '../../constants/Colors';
-import { bindActionCreators } from 'redux';
 import * as CartActions from '../../ducks/cartDuck';
+
 export default function ProductDetailScreen({ navigation, route }) {
   const { id } = route.params;
 
