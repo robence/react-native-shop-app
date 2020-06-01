@@ -3,8 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/UI/HeaderButton';
-import { ProductsOverviewScreen, ProductDetailScreen } from '../screens/shop';
 import Colors from '../constants/Colors';
+import {
+  ProductsOverviewScreen,
+  ProductDetailScreen,
+  CartScreen,
+} from '../screens/shop';
 
 const Stack = createStackNavigator();
 
@@ -28,18 +32,18 @@ export default function ProductsNavigator() {
       <Stack.Screen
         name="ProductsOverviewScreen"
         component={ProductsOverviewScreen}
-        options={{
+        options={({ navigation }) => ({
           title: 'All Products',
           headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
               <Item
                 title="Cart"
                 iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
-                onPress={() => {}}
+                onPress={() => navigation.navigate('CartScreen')}
               />
             </HeaderButtons>
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name="ProductDetailScreen"
@@ -48,6 +52,7 @@ export default function ProductsNavigator() {
           title: route.params.title,
         })}
       />
+      <Stack.Screen name="CartScreen" component={CartScreen} />
     </Stack.Navigator>
   );
 }

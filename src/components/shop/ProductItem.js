@@ -36,7 +36,7 @@ export default function ProductItem({ item, onViewDetail, onAddToCart }) {
             </View>
             <View style={styles.detail}>
               <Text style={styles.title}>{title}</Text>
-              <Text style={styles.price}>{price.toFixed(2)}</Text>
+              <Text style={styles.price}>${price.toFixed(2)}</Text>
             </View>
             <View style={styles.actions}>
               <Button
@@ -46,7 +46,7 @@ export default function ProductItem({ item, onViewDetail, onAddToCart }) {
               />
               <Button
                 color={Colors.primary}
-                title="Add To Cart"
+                title="To Cart"
                 onPress={onAddToCart}
               />
             </View>
