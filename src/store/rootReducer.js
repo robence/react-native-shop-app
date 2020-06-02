@@ -7,7 +7,7 @@ import ordersReducer from '../ducks/ordersDuck';
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
-  order: ordersReducer,
+  orders: ordersReducer,
 });
 
 export default rootReducer;
