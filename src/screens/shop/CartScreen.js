@@ -9,10 +9,12 @@ import * as CartActions from '../../ducks/cartDuck';
 export default function CartScreen() {
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) =>
-    Object.entries(state.cart.items).map(([key, value]) => ({
-      productId: key,
-      ...value,
-    }))
+    Object.entries(state.cart.items)
+      .map(([key, value]) => ({
+        productId: key,
+        ...value,
+      }))
+      .sort((a, b) => (a.productId > b.productId ? 1 : -1))
   );
 
   const dispatch = useDispatch();
