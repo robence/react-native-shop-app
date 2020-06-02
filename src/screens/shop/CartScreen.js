@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import Colors from '../../constants/Colors';
 import { CartItem } from '../../components/shop';
 import * as CartActions from '../../ducks/cartDuck';
+import * as OrdersActions from '../../ducks/ordersDuck';
 
 export default function CartScreen() {
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
@@ -18,7 +19,10 @@ export default function CartScreen() {
   );
 
   const dispatch = useDispatch();
-  const { removeFromCart } = bindActionCreators(CartActions, dispatch);
+  const { removeFromCart, addOrder } = bindActionCreators(
+    { ...CartActions, ...OrdersActions },
+    dispatch
+  );
 
   const renderCartItem = ({ item }) => (
     <CartItem item={item} onRemove={() => removeFromCart(item.productId)} />
@@ -35,6 +39,7 @@ export default function CartScreen() {
           title="Order Now"
           color={Colors.accent}
           disabled={cartItems.length === 0}
+          onPress={() => addOrder(cartItems, cartTotalAmount)}
         />
       </View>
       <FlatList
