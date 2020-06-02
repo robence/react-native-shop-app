@@ -20,9 +20,6 @@ export default function CartScreen() {
   const dispatch = useDispatch();
   const { removeFromCart } = bindActionCreators(CartActions, dispatch);
 
-  console.log('cartItems');
-  console.log(cartItems);
-
   const renderCartItem = ({ item }) => (
     <CartItem item={item} onRemove={() => removeFromCart(item.productId)} />
   );

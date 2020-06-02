@@ -44,11 +44,6 @@ export default function cartReducer(state = initialState, action) {
       // eslint-disable-next-line no-param-reassign
       delete state.items[action.productId];
 
-      console.log('logs');
-
-      console.log(state.totalAmount);
-      console.log(productPrice);
-
       return {
         ...state,
         totalAmount: state.totalAmount - productPrice,
