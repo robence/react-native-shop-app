@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { Ionicons } from '@expo/vector-icons';
 import HeaderButton from '../components/UI/HeaderButton';
 import Colors from '../constants/Colors';
 import {
@@ -98,6 +99,14 @@ function OrdersNavigator() {
 
 const Drawer = createDrawerNavigator();
 
+const MyDrawerIcon = (iconName) => (drawerConfig) => (
+  <Ionicons
+    name={Platform.OS === 'android' ? `md-${iconName}` : `ios-${iconName}`}
+    size={23}
+    color={drawerConfig.color}
+  />
+);
+
 export default function ShopNavigator() {
   return (
     <Drawer.Navigator
@@ -106,8 +115,20 @@ export default function ShopNavigator() {
         activeTintColor: Colors.primary,
       }}
     >
-      <Drawer.Screen name="Products" component={ProductsNavigator} />
-      <Drawer.Screen name="Orders" component={OrdersNavigator} />
+      <Drawer.Screen
+        name="Products"
+        component={ProductsNavigator}
+        options={{
+          drawerIcon: MyDrawerIcon('cart'),
+        }}
+      />
+      <Drawer.Screen
+        name="Orders"
+        component={OrdersNavigator}
+        options={{
+          drawerIcon: MyDrawerIcon('list'),
+        }}
+      />
     </Drawer.Navigator>
   );
 }
