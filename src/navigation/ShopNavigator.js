@@ -27,6 +27,18 @@ const defaultNavOptions = {
   },
 };
 
+function HamburgerMenu({ navigation }) {
+  return (
+    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <Item
+        title="Menu"
+        iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+        onPress={() => navigation.openDrawer()}
+      />
+    </HeaderButtons>
+  );
+}
+
 function ProductsNavigator() {
   return (
     <Stack.Navigator
@@ -38,6 +50,7 @@ function ProductsNavigator() {
         component={ProductsOverviewScreen}
         options={({ navigation }) => ({
           title: 'All Products',
+          headerLeft: () => <HamburgerMenu navigation={navigation} />,
           headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
               <Item
@@ -56,7 +69,11 @@ function ProductsNavigator() {
           title: route.params.title,
         })}
       />
-      <Stack.Screen name="CartScreen" component={CartScreen} />
+      <Stack.Screen
+        name="CartScreen"
+        component={CartScreen}
+        options={{ headerTitle: 'Your Cart' }}
+      />
     </Stack.Navigator>
   );
 }
@@ -67,7 +84,14 @@ function OrdersNavigator() {
       initialRouteName="OrdersScreen"
       screenOptions={defaultNavOptions}
     >
-      <Stack.Screen name="OrdersScreen" component={OrdersScreen} />
+      <Stack.Screen
+        name="OrdersScreen"
+        component={OrdersScreen}
+        options={({ navigation }) => ({
+          headerTitle: 'Your Orders',
+          headerLeft: () => <HamburgerMenu navigation={navigation} />,
+        })}
+      />
     </Stack.Navigator>
   );
 }
@@ -76,7 +100,12 @@ const Drawer = createDrawerNavigator();
 
 export default function ShopNavigator() {
   return (
-    <Drawer.Navigator initialRouteName="Products">
+    <Drawer.Navigator
+      initialRouteName="Products"
+      drawerContentOptions={{
+        activeTintColor: Colors.primary,
+      }}
+    >
       <Drawer.Screen name="Products" component={ProductsNavigator} />
       <Drawer.Screen name="Orders" component={OrdersNavigator} />
     </Drawer.Navigator>
