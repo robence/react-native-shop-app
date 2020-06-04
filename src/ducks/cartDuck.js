@@ -1,5 +1,6 @@
 /* eslint-disable no-case-declarations */
 import CartItem from '../models/cart-item';
+import { ADD_ORDER } from './ordersDuck';
 
 const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
@@ -48,6 +49,8 @@ export default function cartReducer(state = initialState, action) {
         ...state,
         totalAmount: state.totalAmount - productPrice,
       };
+    case ADD_ORDER:
+      return initialState;
 
     default:
       return state;

@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 import Order from '../models/order';
 
-const ADD_ORDER = 'ADD_ORDER';
+export const ADD_ORDER = 'ADD_ORDER';
 
 const initialState = {
   orders: [],
