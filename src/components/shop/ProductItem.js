@@ -10,12 +10,21 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
+
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import Colors from '../../constants/Colors';
+import * as CartActions from '../../ducks/cartDuck';
 
-export default function ProductItem({ item, onViewDetail, onAddToCart }) {
+export default function ProductItem({ item }) {
+  const dispatch = useDispatch();
+  const { addToCart } = bindActionCreators(CartActions, dispatch);
+
   const { title, price, imageUrl, id } = item;
-
   const navigation = useNavigation();
+
+  const onAddToCart = () => addToCart(item);
 
   const goToDetails = () =>
     navigation.navigate('ProductDetailScreen', { id, title });
@@ -56,6 +65,17 @@ export default function ProductItem({ item, onViewDetail, onAddToCart }) {
     </View>
   );
 }
+
+ProductItem.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.string,
+    ownerId: PropTypes.string,
+    title: PropTypes.string,
+    imageUrl: PropTypes.string,
+    description: PropTypes.string,
+    price: PropTypes.number,
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   product: {

@@ -7,6 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import PropTypes from 'prop-types';
 
 export default function CartItem({ item, onRemove }) {
   const { quantity, productTitle: title, sum: amount } = item;
@@ -29,6 +30,16 @@ export default function CartItem({ item, onRemove }) {
     </View>
   );
 }
+
+CartItem.propTypes = {
+  item: PropTypes.shape({
+    quantity: PropTypes.number,
+    productPrice: PropTypes.number,
+    productTitle: PropTypes.string,
+    sum: PropTypes.number,
+  }).isRequired,
+  onRemove: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   cartItem: {
