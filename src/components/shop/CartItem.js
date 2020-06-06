@@ -19,17 +19,23 @@ export default function CartItem({ item, onRemove }) {
       </View>
       <View>
         <Text style={styles.mainText}>{amount.toFixed(2)}</Text>
-        <TouchableOpacity onPress={onRemove} style={styles.deleteButton}>
-          <Ionicons
-            name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
-            size={23}
-            color="red"
-          />
-        </TouchableOpacity>
+        {onRemove && (
+          <TouchableOpacity onPress={onRemove} style={styles.deleteButton}>
+            <Ionicons
+              name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
+              size={23}
+              color="red"
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
 }
+
+CartItem.defaultProps = {
+  onRemove: null,
+};
 
 CartItem.propTypes = {
   item: PropTypes.shape({
@@ -38,7 +44,7 @@ CartItem.propTypes = {
     productTitle: PropTypes.string,
     sum: PropTypes.number,
   }).isRequired,
-  onRemove: PropTypes.func.isRequired,
+  onRemove: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
