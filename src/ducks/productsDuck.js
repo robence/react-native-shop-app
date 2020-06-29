@@ -11,3 +11,8 @@ export default function productsReducer(state = initialState, action) {
       return state;
   }
 }
+
+export const getSelectedProduct = (id) => (state) =>
+  state.products.availableProducts.find((product) => product.id === id);
+
+export const getUserProducts = (state) => state.products.userProduct;

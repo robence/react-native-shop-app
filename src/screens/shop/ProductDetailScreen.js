@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getSelectedProduct } from '../../store/selectors';
+import { getSelectedProduct } from '../../ducks/productsDuck';
 import Colors from '../../constants/Colors';
 import * as CartActions from '../../ducks/cartDuck';
 

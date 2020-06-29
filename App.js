@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 
-import store from './src/store';
+import store from './src/ducks/store';
 import ShopNavigator from './src/navigation';
 
 const fetchFonts = () => {
