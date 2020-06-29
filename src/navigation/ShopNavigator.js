@@ -13,6 +13,8 @@ import {
   OrdersScreen,
 } from '../screens/shop';
 
+import { UserProductsScreen } from '../screens/user';
+
 const Stack = createStackNavigator();
 
 const defaultNavOptions = {
@@ -97,6 +99,24 @@ function OrdersNavigator() {
   );
 }
 
+function UserNavigator() {
+  return (
+    <Stack.Navigator
+      initialRouteName="UserProductsScreen"
+      screenOptions={defaultNavOptions}
+    >
+      <Stack.Screen
+        name="UserProductsScreen"
+        component={UserProductsScreen}
+        options={({ navigation }) => ({
+          headerTitle: 'Your Products',
+          headerLeft: () => <HamburgerMenu navigation={navigation} />,
+        })}
+      />
+    </Stack.Navigator>
+  );
+}
+
 const Drawer = createDrawerNavigator();
 
 const MyDrawerIcon = (iconName) => (drawerConfig) => (
@@ -127,6 +147,13 @@ export default function ShopNavigator() {
         component={OrdersNavigator}
         options={{
           drawerIcon: MyDrawerIcon('list'),
+        }}
+      />
+      <Drawer.Screen
+        name="User"
+        component={UserNavigator}
+        options={{
+          drawerIcon: MyDrawerIcon('create'),
         }}
       />
     </Drawer.Navigator>
