@@ -4,30 +4,15 @@ import {
   View,
   Text,
   Image,
-  Button,
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
 
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import Colors from '../../constants/Colors';
-import * as CartActions from '../../ducks/cartDuck';
 
-export default function ProductItem({ item }) {
-  const dispatch = useDispatch();
-  const { addToCart } = bindActionCreators(CartActions, dispatch);
-
-  const { title, price, imageUrl, id } = item;
-  const navigation = useNavigation();
-
-  const onAddToCart = () => addToCart(item);
-
-  const goToDetails = () =>
-    navigation.navigate('ProductDetailScreen', { id, title });
+export default function ProductItem({ item, children, onSelect }) {
+  const { title, price, imageUrl } = item;
 
   let TouchableCmp = TouchableOpacity;
 
@@ -38,7 +23,7 @@ export default function ProductItem({ item }) {
   return (
     <View style={styles.product}>
       <View style={styles.touchable}>
-        <TouchableCmp activeOpacity={0.6} onPress={goToDetails} useForeground>
+        <TouchableCmp activeOpacity={0.6} onPress={onSelect} useForeground>
           <View>
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={{ uri: imageUrl }} />
@@ -47,18 +32,7 @@ export default function ProductItem({ item }) {
               <Text style={styles.title}>{title}</Text>
               <Text style={styles.price}>${price.toFixed(2)}</Text>
             </View>
-            <View style={styles.actions}>
-              <Button
-                color={Colors.primary}
-                title="View Details"
-                onPress={goToDetails}
-              />
-              <Button
-                color={Colors.primary}
-                title="To Cart"
-                onPress={onAddToCart}
-              />
-            </View>
+            <View style={styles.actions}>{children}</View>
           </View>
         </TouchableCmp>
       </View>
@@ -75,6 +49,7 @@ ProductItem.propTypes = {
     description: PropTypes.string,
     price: PropTypes.number,
   }).isRequired,
+  onSelect: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
