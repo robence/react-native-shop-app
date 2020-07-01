@@ -1,6 +1,7 @@
 /* eslint-disable no-case-declarations */
 import CartItem from '../models/cart-item';
 import { ADD_ORDER } from './ordersDuck';
+import { DELETE_PRODUCT } from './productsDuck';
 
 const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
@@ -52,6 +53,18 @@ export default function cartReducer(state = initialState, action) {
     case ADD_ORDER:
       return initialState;
 
+    case DELETE_PRODUCT:
+      if (!state.items[action.productId]) {
+        return state;
+      }
+      const updatedItems = { ...state.items };
+      const itemTotal = updatedItems[action.productId].sum;
+      delete updatedItems[action.productId];
+      return {
+        ...state,
+        items: updatedItems,
+        totalAmount: state.totalAmount - itemTotal,
+      };
     default:
       return state;
   }
