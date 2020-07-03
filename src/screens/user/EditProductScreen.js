@@ -1,14 +1,76 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { set } from 'react-native-reanimated';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { getSelectedProduct } from '../../ducks/productsDuck';
 
 export default function EditProductScreen({ route }) {
   const productId = route.params?.id;
+  const product = useSelector(getSelectedProduct(productId));
+
+  const [title, setTitle] = useState(product?.title ?? '');
+  const [imageUrl, setImageUrl] = useState(product?.imageUrl ?? '');
+  const [price, setPrice] = useState(product?.price?.toString() ?? '');
+  const [description, setDescription] = useState(product?.description ?? '');
 
   return (
-    <View>
-      <Text>EditProductScreen {productId}</Text>
-    </View>
+    <ScrollView>
+      <View style={styles.form}>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Title</Text>
+          <TextInput
+            style={styles.input}
+            value={title}
+            onChangeText={(text) => setTitle(text)}
+          />
+        </View>
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Image</Text>
+          <TextInput
+            style={styles.input}
+            value={imageUrl}
+            onChangeText={(text) => setImageUrl(text)}
+          />
+        </View>
+        {!product && (
+          <View style={styles.formControl}>
+            <Text style={styles.label}>Price</Text>
+            <TextInput
+              style={styles.input}
+              value={price}
+              onChangeText={(text) => setPrice(text)}
+            />
+          </View>
+        )}
+        <View style={styles.formControl}>
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            style={styles.input}
+            value={description}
+            onChangeText={(text) => setDescription(text)}
+          />
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  form: {
+    margin: 20,
+  },
+  formControl: {
+    width: '100%',
+  },
+  label: {
+    fontFamily: 'open-sans-bold',
+    marginVertical: 8,
+  },
+  input: {
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+  },
+});

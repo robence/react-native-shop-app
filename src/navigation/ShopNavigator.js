@@ -127,9 +127,14 @@ function UserNavigator() {
       <Stack.Screen
         name="EditProductScreen"
         component={EditProductScreen}
-        options={({ navigation }) => ({
-          headerTitle: 'Edit Product',
+        options={({ navigation, route }) => ({
+          headerTitle: route.params?.id ? 'Edit Product' : 'Add Product',
           headerLeft: () => <HamburgerMenu navigation={navigation} />,
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item title="Save" iconName="md-checkmark" onPress={() => {}} />
+            </HeaderButtons>
+          ),
         })}
       />
     </Stack.Navigator>
