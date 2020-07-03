@@ -13,7 +13,7 @@ import {
   OrdersScreen,
 } from '../screens/shop';
 
-import { UserProductsScreen } from '../screens/user';
+import { UserProductsScreen, EditProductScreen } from '../screens/user';
 
 const Stack = createStackNavigator();
 
@@ -110,6 +110,25 @@ function UserNavigator() {
         component={UserProductsScreen}
         options={({ navigation }) => ({
           headerTitle: 'Your Products',
+          headerLeft: () => <HamburgerMenu navigation={navigation} />,
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item
+                title="Add"
+                iconName={
+                  Platform.OS === 'android' ? 'md-create' : 'ios-create'
+                }
+                onPress={() => navigation.navigate('EditProductScreen')}
+              />
+            </HeaderButtons>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="EditProductScreen"
+        component={EditProductScreen}
+        options={({ navigation }) => ({
+          headerTitle: 'Edit Product',
           headerLeft: () => <HamburgerMenu navigation={navigation} />,
         })}
       />

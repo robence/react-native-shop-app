@@ -22,7 +22,7 @@ export default function ProductsOverviewScreen() {
     <FlatList
       data={products}
       renderItem={({ item }) => (
-        <ProductItem item={item} onSelect={() => {}}>
+        <ProductItem item={item} onSelect={() => onSelect(item)}>
           <Button
             color={Colors.primary}
             title="View Details"
