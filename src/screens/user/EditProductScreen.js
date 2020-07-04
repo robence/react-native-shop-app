@@ -2,7 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getSelectedProduct } from '../../ducks/productsDuck';
+import {
+  getSelectedProduct,
+  updateProduct,
+  createProduct,
+} from '../../ducks/productsDuck';
 
 export default function EditProductScreen({ navigation, route }) {
   const productId = route.params?.id;
@@ -13,9 +17,14 @@ export default function EditProductScreen({ navigation, route }) {
   const [price, setPrice] = useState(product?.price?.toString() ?? '');
   const [description, setDescription] = useState(product?.description ?? '');
 
+  const dispatch = useDispatch();
   const onSubmit = useCallback(() => {
-    console.log('123');
-  }, []);
+    if (!product) {
+      dispatch(createProduct({ title, imageUrl, description, price: +price }));
+    } else {
+      dispatch(updateProduct({ id: productId, title, imageUrl, description }));
+    }
+  }, [product, dispatch, title, imageUrl, description, price, productId]);
 
   useEffect(() => {
     navigation.setParams({ onSubmit });
