@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
-import { set } from 'react-native-reanimated';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getSelectedProduct } from '../../ducks/productsDuck';
 
-export default function EditProductScreen({ route }) {
+export default function EditProductScreen({ navigation, route }) {
   const productId = route.params?.id;
   const product = useSelector(getSelectedProduct(productId));
 
@@ -13,6 +12,14 @@ export default function EditProductScreen({ route }) {
   const [imageUrl, setImageUrl] = useState(product?.imageUrl ?? '');
   const [price, setPrice] = useState(product?.price?.toString() ?? '');
   const [description, setDescription] = useState(product?.description ?? '');
+
+  const onSubmit = useCallback(() => {
+    console.log('123');
+  }, []);
+
+  useEffect(() => {
+    navigation.setParams({ onSubmit });
+  }, [onSubmit, navigation]);
 
   return (
     <ScrollView>

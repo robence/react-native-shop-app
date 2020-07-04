@@ -132,7 +132,11 @@ function UserNavigator() {
           headerLeft: () => <HamburgerMenu navigation={navigation} />,
           headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item title="Save" iconName="md-checkmark" onPress={() => {}} />
+              <Item
+                title="Save"
+                iconName="md-checkmark"
+                onPress={route.params?.onSubmit}
+              />
             </HeaderButtons>
           ),
         })}
