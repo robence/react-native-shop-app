@@ -1,18 +1,16 @@
 import React from 'react';
-import { FlatList, Button } from 'react-native';
+import { FlatList, Button, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { useNavigation } from '@react-navigation/native';
 import { ProductItem } from '../../components/shop';
 import { getUserProducts } from '../../ducks/productsDuck';
 import Colors from '../../constants/Colors';
 
 import * as ProductActions from '../../ducks/productsDuck';
 
-export default function UserProductsScreen() {
+export default function UserProductsScreen({ navigation }) {
   const userProducts = useSelector(getUserProducts);
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const { deleteProduct } = bindActionCreators(ProductActions, dispatch);
 
@@ -20,10 +18,11 @@ export default function UserProductsScreen() {
     navigation.navigate('EditProductScreen', { id });
   };
 
-  const onEdit = onSelect;
-
   const onDelete = ({ id }) => {
-    deleteProduct(id);
+    Alert.alert('Are you sure?', 'Do you really want to delete this item?', [
+      { text: 'No', style: 'default' },
+      { text: 'Yes', style: 'destructive', onPress: () => deleteProduct(id) },
+    ]);
   };
 
   return (
@@ -34,7 +33,7 @@ export default function UserProductsScreen() {
           <Button
             color={Colors.primary}
             title="Edit"
-            onPress={() => onEdit(item)}
+            onPress={() => onSelect(item)}
           />
           <Button
             color={Colors.primary}

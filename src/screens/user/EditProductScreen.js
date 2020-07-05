@@ -24,10 +24,27 @@ export default function EditProductScreen({ navigation, route }) {
     } else {
       dispatch(updateProduct({ id: productId, title, imageUrl, description }));
     }
-  }, [product, dispatch, title, imageUrl, description, price, productId]);
+    navigation.goBack();
+  }, [
+    product,
+    navigation,
+    dispatch,
+    title,
+    imageUrl,
+    description,
+    price,
+    productId,
+  ]);
 
   useEffect(() => {
-    navigation.setParams({ onSubmit });
+    const isScreenAvailable = navigation
+      .dangerouslyGetState()
+      .routes.find((a) => a.name === 'EditProductScreen');
+
+    // needed because navigation.goBack() runs after onSubmit
+    if (isScreenAvailable) {
+      navigation.setParams({ onSubmit });
+    }
   }, [onSubmit, navigation]);
 
   return (
