@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import CartItem from './CartItem';
 import Colors from '../../constants/Colors';
+import { Card } from '../UI';
 
 export default function OrderItem({ order }) {
   const [showDetails, setShowDetails] = useState(false);
@@ -11,7 +12,7 @@ export default function OrderItem({ order }) {
   const { items, totalAmount: amount } = order;
 
   return (
-    <View style={styles.orderItem}>
+    <Card style={styles.orderItem}>
       <View style={styles.summary}>
         <Text style={styles.totalAmount}>{amount.toFixed(2)}</Text>
         <Text style={styles.date}>{order.readableDate()}</Text>
@@ -28,7 +29,7 @@ export default function OrderItem({ order }) {
           ))}
         </View>
       )}
-    </View>
+    </Card>
   );
 }
 
@@ -51,13 +52,6 @@ OrderItem.propTypes = {
 
 const styles = StyleSheet.create({
   orderItem: {
-    shadowColor: 'black',
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: 'white',
     margin: 20,
     padding: 10,
     alignItems: 'center',
