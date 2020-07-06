@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -13,12 +20,21 @@ export default function EditProductScreen({ navigation, route }) {
   const product = useSelector(getSelectedProduct(productId));
 
   const [title, setTitle] = useState(product?.title ?? '');
+  const [titleIsValid, setTitleIsValid] = useState(false);
+
   const [imageUrl, setImageUrl] = useState(product?.imageUrl ?? '');
   const [price, setPrice] = useState(product?.price?.toString() ?? '');
   const [description, setDescription] = useState(product?.description ?? '');
 
   const dispatch = useDispatch();
   const onSubmit = useCallback(() => {
+    if (!titleIsValid) {
+      Alert.alert('Wrong input!', 'Please check the errors in the form.', [
+        { text: 'Okay' },
+      ]);
+      return;
+    }
+
     if (!product) {
       dispatch(createProduct({ title, imageUrl, description, price: +price }));
     } else {
@@ -26,6 +42,7 @@ export default function EditProductScreen({ navigation, route }) {
     }
     navigation.goBack();
   }, [
+    titleIsValid,
     product,
     navigation,
     dispatch,
@@ -35,6 +52,8 @@ export default function EditProductScreen({ navigation, route }) {
     price,
     productId,
   ]);
+
+  console.log(titleIsValid);
 
   useEffect(() => {
     const isScreenAvailable = navigation
@@ -47,6 +66,15 @@ export default function EditProductScreen({ navigation, route }) {
     }
   }, [onSubmit, navigation]);
 
+  const titleChangeHandler = (text) => {
+    if (text.trim().length === 0) {
+      setTitleIsValid(false);
+    } else {
+      setTitleIsValid(true);
+    }
+    setTitle(text);
+  };
+
   return (
     <ScrollView>
       <View style={styles.form}>
@@ -55,8 +83,9 @@ export default function EditProductScreen({ navigation, route }) {
           <TextInput
             style={styles.input}
             value={title}
-            onChangeText={(text) => setTitle(text)}
+            onChangeText={(text) => titleChangeHandler(text)}
           />
+          {!titleIsValid && <Text>Please enter a valid title</Text>}
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Image</Text>
@@ -73,6 +102,7 @@ export default function EditProductScreen({ navigation, route }) {
               style={styles.input}
               value={price}
               onChangeText={(text) => setPrice(text)}
+              keyboardType="decimal-pad"
             />
           </View>
         )}
