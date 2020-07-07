@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useReducer } from 'react';
 import {
   View,
   Text,
@@ -15,20 +15,54 @@ import {
   createProduct,
 } from '../../ducks/productsDuck';
 
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    return {
+      ...state,
+      inputValues: {
+        ...state.inputValues,
+        [action.input]: action.value,
+      },
+      inputValidities: {
+        ...state.inputValues,
+        [action.input]: action.isValid,
+      },
+      formIsValid:
+        Object.values(state.inputValidities).every(
+          (isInputValid) => isInputValid
+        ) && action.isValid,
+    };
+  }
+  return state;
+};
+
 export default function EditProductScreen({ navigation, route }) {
   const productId = route.params?.id;
   const product = useSelector(getSelectedProduct(productId));
+  const isEditing = !!product;
 
-  const [title, setTitle] = useState(product?.title ?? '');
-  const [titleIsValid, setTitleIsValid] = useState(false);
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      title: product?.title ?? '',
+      imageUrl: product?.imageUrl ?? '',
+      description: product?.description ?? '',
+      price: '',
+    },
+    inputValidities: {
+      title: isEditing,
+      imageUrl: isEditing,
+      description: isEditing,
+      price: isEditing,
+    },
+    formIsValid: isEditing,
+  });
 
-  const [imageUrl, setImageUrl] = useState(product?.imageUrl ?? '');
-  const [price, setPrice] = useState(product?.price?.toString() ?? '');
-  const [description, setDescription] = useState(product?.description ?? '');
+  const { title, description, imageUrl, price } = formState.inputValues;
 
   const dispatch = useDispatch();
   const onSubmit = useCallback(() => {
-    if (!titleIsValid) {
+    if (!formState.formIsValid) {
       Alert.alert('Wrong input!', 'Please check the errors in the form.', [
         { text: 'Okay' },
       ]);
@@ -42,7 +76,7 @@ export default function EditProductScreen({ navigation, route }) {
     }
     navigation.goBack();
   }, [
-    titleIsValid,
+    formState.formIsValid,
     product,
     navigation,
     dispatch,
@@ -52,8 +86,6 @@ export default function EditProductScreen({ navigation, route }) {
     price,
     productId,
   ]);
-
-  console.log(titleIsValid);
 
   useEffect(() => {
     const isScreenAvailable = navigation
@@ -66,13 +98,17 @@ export default function EditProductScreen({ navigation, route }) {
     }
   }, [onSubmit, navigation]);
 
-  const titleChangeHandler = (text) => {
-    if (text.trim().length === 0) {
-      setTitleIsValid(false);
-    } else {
-      setTitleIsValid(true);
+  const textChangeHandler = (inputIdentifier, text) => {
+    let isValid = false;
+    if (text.trim().length > 0) {
+      isValid = true;
     }
-    setTitle(text);
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: text,
+      isValid,
+      input: inputIdentifier,
+    });
   };
 
   return (
@@ -83,25 +119,27 @@ export default function EditProductScreen({ navigation, route }) {
           <TextInput
             style={styles.input}
             value={title}
-            onChangeText={(text) => titleChangeHandler(text)}
+            onChangeText={(text) => textChangeHandler('title', text)}
           />
-          {!titleIsValid && <Text>Please enter a valid title</Text>}
+          {!formState.inputValidities.title && (
+            <Text>Please enter a valid title</Text>
+          )}
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Image</Text>
           <TextInput
             style={styles.input}
             value={imageUrl}
-            onChangeText={(text) => setImageUrl(text)}
+            onChangeText={(text) => textChangeHandler('imageUrl', text)}
           />
         </View>
-        {!product && (
+        {!isEditing && (
           <View style={styles.formControl}>
             <Text style={styles.label}>Price</Text>
             <TextInput
               style={styles.input}
               value={price}
-              onChangeText={(text) => setPrice(text)}
+              onChangeText={(text) => textChangeHandler('price', text)}
               keyboardType="decimal-pad"
             />
           </View>
@@ -111,7 +149,7 @@ export default function EditProductScreen({ navigation, route }) {
           <TextInput
             style={styles.input}
             value={description}
-            onChangeText={(text) => setDescription(text)}
+            onChangeText={(text) => textChangeHandler('description', text)}
           />
         </View>
       </View>
