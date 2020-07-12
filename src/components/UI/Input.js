@@ -82,7 +82,11 @@ export default function Input({
         onBlur={lostFocusHandler}
         {...props}
       />
-      {!inputState.isValid && touched && <Text>{errorText}</Text>}
+      {!inputState.isValid && touched && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{errorText}</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -100,5 +104,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
+  },
+  errorContainer: {
+    marginVertical: 5,
+  },
+  errorText: {
+    fontFamily: 'open-sans',
+    color: 'red',
+    fontSize: 13,
   },
 });
