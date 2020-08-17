@@ -5,6 +5,7 @@ import Product from '../models/product';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
+export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 const initialState = {
   availableProducts: PRODUCTS,
@@ -13,6 +14,12 @@ const initialState = {
 
 export default function productsReducer(state = initialState, action) {
   switch (action.type) {
+    case SET_PRODUCTS:
+      return {
+        ...state,
+        availableProducts: action.products,
+        userProducts: action.products.filter((prod) => prod.ownerId === 'u1'),
+      };
     case DELETE_PRODUCT:
       return {
         ...state,
@@ -24,9 +31,9 @@ export default function productsReducer(state = initialState, action) {
       };
 
     case CREATE_PRODUCT:
-      const { title, imageUrl, description, price } = action.productData;
+      const { id, title, imageUrl, description, price } = action.productData;
       const newProduct = new Product(
-        new Date().toString(),
+        id,
         'u1',
         title,
         imageUrl,
@@ -76,15 +83,34 @@ export const deleteProduct = (productId) => ({
   productId,
 });
 
-export const createProduct = ({ title, description, imageUrl, price }) => ({
-  type: CREATE_PRODUCT,
-  productData: {
-    title,
-    description,
-    imageUrl,
-    price,
-  },
-});
+export const createProduct = (payload) => async (dispatch) => {
+  const { title, description, imageUrl, price } = payload;
+  // any async code you want!
+  const response = await fetch(
+    'https://rn-complete-guide-a3ac3.firebaseio.com/products.json',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, description, imageUrl, price }),
+    }
+  );
+
+  const resData = await response.json();
+  console.log(resData);
+
+  dispatch({
+    type: CREATE_PRODUCT,
+    productData: {
+      id: resData.name,
+      title,
+      description,
+      imageUrl,
+      price,
+    },
+  });
+};
 
 export const updateProduct = ({ id, title, description, imageUrl }) => ({
   type: UPDATE_PRODUCT,
@@ -95,6 +121,30 @@ export const updateProduct = ({ id, title, description, imageUrl }) => ({
     imageUrl,
   },
 });
+
+export const fetchProducts = () => async (dispatch) => {
+  const response = await fetch(
+    'https://rn-complete-guide-a3ac3.firebaseio.com/products.json'
+  );
+
+  const resData = await response.json();
+  console.log(resData);
+
+  const loadedProducts = [];
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key in resData) {
+    const { title, imageUrl, description, price } = resData[key];
+    loadedProducts.push(
+      new Product(key, 'u1', title, imageUrl, description, price)
+    );
+  }
+
+  dispatch({
+    type: SET_PRODUCTS,
+    products: loadedProducts,
+  });
+};
 
 const filterById = (list, id) => list.filter((item) => item.id !== id);
 
