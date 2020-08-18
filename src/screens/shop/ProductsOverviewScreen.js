@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   FlatList,
   Button,
   ActivityIndicator,
   View,
+  Text,
   StyleSheet,
 } from 'react-native';
 
@@ -20,29 +21,57 @@ import * as ProductActions from '../../ducks/productsDuck';
 export default function ProductsOverviewScreen() {
   const navigation = useNavigation();
 
-  const [isLoading, setIsLoading] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
 
   const { addToCart } = bindActionCreators(CartActions, dispatch);
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      await dispatch(ProductActions.fetchProducts());
-      setIsLoading(false);
-    };
-
+  const loadProducts = useCallback(async () => {
+    setError(null);
     setIsLoading(true);
-    loadProducts();
+    try {
+      await dispatch(ProductActions.fetchProducts());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
   }, [dispatch]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [dispatch, loadProducts]);
 
   const onSelect = ({ id, title }) =>
     navigation.navigate('ProductDetailScreen', { id, title });
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>An error ocurred!</Text>
+        <Button
+          title="Try again"
+          onPress={loadProducts}
+          color={Colors.primary}
+        />
+      </View>
+    );
+  }
 
   if (isLoading) {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  if (!isLoading && products.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text style={{}}>No products found. Maybe start adding some!</Text>
       </View>
     );
   }

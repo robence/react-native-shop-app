@@ -123,27 +123,36 @@ export const updateProduct = ({ id, title, description, imageUrl }) => ({
 });
 
 export const fetchProducts = () => async (dispatch) => {
-  const response = await fetch(
-    'https://rn-complete-guide-a3ac3.firebaseio.com/products.json'
-  );
-
-  const resData = await response.json();
-  console.log(resData);
-
-  const loadedProducts = [];
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const key in resData) {
-    const { title, imageUrl, description, price } = resData[key];
-    loadedProducts.push(
-      new Product(key, 'u1', title, imageUrl, description, price)
+  try {
+    const response = await fetch(
+      'https://rn-complete-guide-a3ac3.firebaseio.com/products.json'
     );
-  }
 
-  dispatch({
-    type: SET_PRODUCTS,
-    products: loadedProducts,
-  });
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
+
+    const resData = await response.json();
+    console.log(resData);
+
+    const loadedProducts = [];
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in resData) {
+      const { title, imageUrl, description, price } = resData[key];
+      loadedProducts.push(
+        new Product(key, 'u1', title, imageUrl, description, price)
+      );
+    }
+
+    dispatch({
+      type: SET_PRODUCTS,
+      products: loadedProducts,
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };
 
 const filterById = (list, id) => list.filter((item) => item.id !== id);
