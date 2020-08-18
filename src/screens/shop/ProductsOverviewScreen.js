@@ -1,5 +1,12 @@
-import React, { useEffect } from 'react';
-import { FlatList, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  FlatList,
+  Button,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+} from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,18 +18,34 @@ import * as CartActions from '../../ducks/cartDuck';
 import * as ProductActions from '../../ducks/productsDuck';
 
 export default function ProductsOverviewScreen() {
-  const products = useSelector((state) => state.products.availableProducts);
-
   const navigation = useNavigation();
+
+  const [isLoading, setIsLoading] = useState();
+  const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
+
   const { addToCart } = bindActionCreators(CartActions, dispatch);
 
   useEffect(() => {
-    dispatch(ProductActions.fetchProducts());
+    const loadProducts = async () => {
+      await dispatch(ProductActions.fetchProducts());
+      setIsLoading(false);
+    };
+
+    setIsLoading(true);
+    loadProducts();
   }, [dispatch]);
 
   const onSelect = ({ id, title }) =>
     navigation.navigate('ProductDetailScreen', { id, title });
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -44,3 +67,11 @@ export default function ProductsOverviewScreen() {
     />
   );
 }
+
+const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
