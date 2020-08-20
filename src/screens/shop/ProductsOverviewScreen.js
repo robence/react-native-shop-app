@@ -7,14 +7,12 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { ProductItem } from '../../components/shop';
 import Colors from '../../constants/Colors';
-
 import * as CartActions from '../../ducks/cartDuck';
 import * as ProductActions from '../../ducks/productsDuck';
 

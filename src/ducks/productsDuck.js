@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import PRODUCTS from '../data/dummy-data';
 import Product from '../models/product';
 
@@ -137,7 +136,6 @@ export const fetchProducts = () => async (dispatch) => {
 
     const loadedProducts = [];
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const key in resData) {
       const { title, imageUrl, description, price } = resData[key];
       loadedProducts.push(

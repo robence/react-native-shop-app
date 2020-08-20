@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { Ionicons } from '@expo/vector-icons';
+
 import HeaderButton from '../components/UI/HeaderButton';
 import Colors from '../constants/Colors';
 import {
@@ -12,7 +13,6 @@ import {
   CartScreen,
   OrdersScreen,
 } from '../screens/shop';
-
 import { UserProductsScreen, EditProductScreen } from '../screens/user';
 
 const Stack = createStackNavigator();

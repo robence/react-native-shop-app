@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import CartItem from '../models/cart-item';
 import { ADD_ORDER } from './ordersDuck';
 import { DELETE_PRODUCT } from './productsDuck';
@@ -43,7 +42,6 @@ export default function cartReducer(state = initialState, action) {
         return updateCartItem(state, action.productId, updatedCartItem, true);
       }
 
-      // eslint-disable-next-line no-param-reassign
       delete state.items[action.productId];
 
       return {

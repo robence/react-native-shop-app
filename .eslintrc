@@ -1,13 +1,19 @@
 {
-  "extends": [
-    "airbnb",
-    "@react-native-community",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["@react-native-community"],
   "parser": "babel-eslint",
-  "plugins": ["@react-native-community"],
+  "plugins": ["import"],
   "rules": {
-    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".js", ".jsx"] }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "newlines-between": "always"
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

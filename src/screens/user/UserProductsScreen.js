@@ -2,11 +2,11 @@ import React from 'react';
 import { FlatList, Button, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import { ProductItem } from '../../components/shop';
 import { getUserProducts } from '../../ducks/productsDuck';
-import Colors from '../../constants/Colors';
-
 import * as ProductActions from '../../ducks/productsDuck';
+import Colors from '../../constants/Colors';
 
 export default function UserProductsScreen({ navigation }) {
   const userProducts = useSelector(getUserProducts);

@@ -1,10 +1,8 @@
-/* eslint-disable global-require */
 import 'react-native-gesture-handler';
 
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
-
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 

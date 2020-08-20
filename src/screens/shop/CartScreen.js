@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import Colors from '../../constants/Colors';
 import { CartItem } from '../../components/shop';
 import * as CartActions from '../../ducks/cartDuck';

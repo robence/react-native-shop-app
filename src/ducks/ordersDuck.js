@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import Order from '../models/order';
 
 export const ADD_ORDER = 'ADD_ORDER';
