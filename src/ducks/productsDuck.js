@@ -78,10 +78,14 @@ export default function productsReducer(state = initialState, action) {
 }
 
 export const deleteProduct = (productId) => async (dispatch) => {
-  await fetch(
+  const response = await fetch(
     `https://rn-complete-guide-a3ac3.firebaseio.com/products${productId}.json`,
     { method: 'DELETE' }
   );
+
+  if (!response.ok) {
+    throw new Error('Something went wrong!');
+  }
 
   dispatch({
     type: DELETE_PRODUCT,
@@ -120,7 +124,7 @@ export const createProduct = (payload) => async (dispatch) => {
 export const updateProduct = (payload) => async (dispatch) => {
   const { id, title, description, imageUrl } = payload;
 
-  await fetch(
+  const response = await fetch(
     `https://rn-complete-guide-a3ac3.firebaseio.com/products/${id}.json`,
     {
       method: 'PATCH',
@@ -130,6 +134,10 @@ export const updateProduct = (payload) => async (dispatch) => {
       body: JSON.stringify({ title, description, imageUrl }),
     }
   );
+
+  if (!response.ok) {
+    throw new Error('Something went wrong!');
+  }
 
   dispatch({
     type: UPDATE_PRODUCT,

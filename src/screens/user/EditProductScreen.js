@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback, useReducer } from 'react';
+import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import {
   View,
   StyleSheet,
   ScrollView,
   Alert,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -14,6 +15,7 @@ import {
   createProduct,
 } from '../../ducks/productsDuck';
 import { Input } from '../../components/UI';
+import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 const formReducer = (state, action) => {
@@ -37,6 +39,9 @@ const formReducer = (state, action) => {
 };
 
 export default function EditProductScreen({ navigation, route }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const productId = route.params?.id;
   const product = useSelector(getSelectedProduct(productId));
   const isEditing = !!product;
@@ -59,8 +64,14 @@ export default function EditProductScreen({ navigation, route }) {
 
   const { title, description, imageUrl, price } = formState.inputValues;
 
+  useEffect(() => {
+    if (error) {
+      Alert.alert('An error occuredd!', error, [{ text: 'Okay' }]);
+    }
+  }, [error]);
+
   const dispatch = useDispatch();
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert('Wrong input!', 'Please check the errors in the form.', [
         { text: 'Okay' },
@@ -68,12 +79,24 @@ export default function EditProductScreen({ navigation, route }) {
       return;
     }
 
-    if (!isEditing) {
-      dispatch(createProduct({ title, imageUrl, description, price: +price }));
-    } else {
-      dispatch(updateProduct({ id: productId, title, imageUrl, description }));
+    setError(false);
+    setIsLoading(true);
+    try {
+      if (!isEditing) {
+        await dispatch(
+          createProduct({ title, imageUrl, description, price: +price })
+        );
+      } else {
+        await dispatch(
+          updateProduct({ id: productId, title, imageUrl, description })
+        );
+      }
+      navigation.goBack();
+    } catch (err) {
+      console.log(err);
+      setError(err.message);
     }
-    navigation.goBack();
+    setIsLoading(false);
   }, [
     formState.formIsValid,
     title,
@@ -108,6 +131,14 @@ export default function EditProductScreen({ navigation, route }) {
     },
     [dispatchFormState]
   );
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -181,17 +212,9 @@ const styles = StyleSheet.create({
   form: {
     margin: 20,
   },
-  formControl: {
-    width: '100%',
-  },
-  label: {
-    fontFamily: 'open-sans-bold',
-    marginVertical: 8,
-  },
-  input: {
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
