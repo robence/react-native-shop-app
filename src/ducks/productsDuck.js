@@ -77,10 +77,17 @@ export default function productsReducer(state = initialState, action) {
   }
 }
 
-export const deleteProduct = (productId) => ({
-  type: DELETE_PRODUCT,
-  productId,
-});
+export const deleteProduct = (productId) => async (dispatch) => {
+  await fetch(
+    `https://rn-complete-guide-a3ac3.firebaseio.com/products${productId}.json`,
+    { method: 'DELETE' }
+  );
+
+  dispatch({
+    type: DELETE_PRODUCT,
+    productId,
+  });
+};
 
 export const createProduct = (payload) => async (dispatch) => {
   const { title, description, imageUrl, price } = payload;
@@ -97,7 +104,6 @@ export const createProduct = (payload) => async (dispatch) => {
   );
 
   const resData = await response.json();
-  console.log(resData);
 
   dispatch({
     type: CREATE_PRODUCT,
@@ -111,15 +117,30 @@ export const createProduct = (payload) => async (dispatch) => {
   });
 };
 
-export const updateProduct = ({ id, title, description, imageUrl }) => ({
-  type: UPDATE_PRODUCT,
-  productId: id,
-  productData: {
-    title,
-    description,
-    imageUrl,
-  },
-});
+export const updateProduct = (payload) => async (dispatch) => {
+  const { id, title, description, imageUrl } = payload;
+
+  await fetch(
+    `https://rn-complete-guide-a3ac3.firebaseio.com/products/${id}.json`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, description, imageUrl }),
+    }
+  );
+
+  dispatch({
+    type: UPDATE_PRODUCT,
+    productId: id,
+    productData: {
+      title,
+      description,
+      imageUrl,
+    },
+  });
+};
 
 export const fetchProducts = () => async (dispatch) => {
   try {
@@ -132,7 +153,6 @@ export const fetchProducts = () => async (dispatch) => {
     }
 
     const resData = await response.json();
-    console.log(resData);
 
     const loadedProducts = [];
 

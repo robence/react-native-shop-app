@@ -39,8 +39,12 @@ export default function ProductsOverviewScreen() {
   }, [dispatch]);
 
   useEffect(() => {
-    loadProducts();
-  }, [dispatch, loadProducts]);
+    navigation.addListener('focus', loadProducts);
+
+    return () => {
+      navigation.removeListener('focus', loadProducts);
+    };
+  }, [loadProducts, navigation]);
 
   const onSelect = ({ id, title }) =>
     navigation.navigate('ProductDetailScreen', { id, title });
