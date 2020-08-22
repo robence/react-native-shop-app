@@ -1,5 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Button,
+  ActivityIndicator,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -10,6 +17,8 @@ import * as OrdersActions from '../../ducks/ordersDuck';
 import { Card } from '../../components/UI';
 
 export default function CartScreen() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) =>
     Object.entries(state.cart.items)
@@ -30,6 +39,12 @@ export default function CartScreen() {
     <CartItem item={item} onRemove={() => removeFromCart(item.productId)} />
   );
 
+  const sendOrderHandler = async () => {
+    setIsLoading(true);
+    await addOrder(cartItems, cartTotalAmount);
+    setIsLoading(false);
+  };
+
   return (
     <View style={styles.screen}>
       <Card style={styles.summary}>
@@ -39,12 +54,16 @@ export default function CartScreen() {
             ${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}
           </Text>
         </Text>
-        <Button
-          title="Order Now"
-          color={Colors.accent}
-          disabled={cartItems.length === 0}
-          onPress={() => addOrder(cartItems, cartTotalAmount)}
-        />
+        {isLoading ? (
+          <ActivityIndicator size="small" color={Colors.primary} />
+        ) : (
+          <Button
+            title="Order Now"
+            color={Colors.accent}
+            disabled={cartItems.length === 0}
+            onPress={sendOrderHandler}
+          />
+        )}
       </Card>
       <FlatList
         data={cartItems}
