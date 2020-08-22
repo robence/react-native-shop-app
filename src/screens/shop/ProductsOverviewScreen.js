@@ -20,31 +20,30 @@ export default function ProductsOverviewScreen() {
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
 
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
-
   const { addToCart } = bindActionCreators(CartActions, dispatch);
 
   const loadProducts = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    setIsRefreshing(true);
     try {
       await dispatch(ProductActions.fetchProducts());
     } catch (err) {
       setError(err.message);
     }
-    setIsLoading(false);
-  }, [dispatch]);
+    setIsRefreshing(false);
+  }, [dispatch, setIsRefreshing, setError]);
 
   useEffect(() => {
-    navigation.addListener('focus', loadProducts);
-
-    return () => {
-      navigation.removeListener('focus', loadProducts);
-    };
-  }, [loadProducts, navigation]);
+    setIsLoading(true);
+    loadProducts().then(() => {
+      setIsLoading(false);
+    });
+  }, [loadProducts]);
 
   const onSelect = ({ id, title }) =>
     navigation.navigate('ProductDetailScreen', { id, title });
@@ -80,6 +79,8 @@ export default function ProductsOverviewScreen() {
 
   return (
     <FlatList
+      onRefresh={loadProducts}
+      refreshing={isRefreshing}
       data={products}
       renderItem={({ item }) => (
         <ProductItem item={item} onSelect={() => onSelect(item)}>
