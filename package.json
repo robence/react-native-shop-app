@@ -37,7 +37,7 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@react-native-community/eslint-config": "^2.0.0",
-    "babel-preset-expo": "~8.1.0",
+    "babel-preset-expo": "8.3.0",
     "eslint": "^7.7.0",
     "eslint-plugin-import": "^2.22.0",
     "prettier": "^2.0.5"
