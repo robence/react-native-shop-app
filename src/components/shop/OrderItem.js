@@ -44,7 +44,7 @@ OrderItem.propTypes = {
         productTitle: PropTypes.string,
         quantity: PropTypes.number,
         sum: PropTypes.number,
-      })
+      }),
     ),
     totalAmount: PropTypes.number,
   }).isRequired,

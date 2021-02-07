@@ -19,7 +19,7 @@ export default function ordersReducer(state = initialState, action) {
         action.orderData.id,
         action.orderData.items,
         action.orderData.amount,
-        action.orderData.date
+        action.orderData.date,
       );
       return {
         ...state,
@@ -33,7 +33,7 @@ export default function ordersReducer(state = initialState, action) {
 export const fetchOrders = () => async (dispatch) => {
   try {
     const response = await fetch(
-      'https://rn-complete-guide-a3ac3.firebaseio.com/orders/u1.json'
+      'https://rn-complete-guide-a3ac3.firebaseio.com/orders/u1.json',
     );
 
     if (!response.ok) {
@@ -72,7 +72,7 @@ export const addOrder = (cartItems, totalAmount) => async (dispatch) => {
         totalAmount,
         date: date.toISOString(),
       }),
-    }
+    },
   );
 
   if (!response.ok) {

@@ -26,13 +26,13 @@ export default function CartScreen() {
         productId: key,
         ...value,
       }))
-      .sort((a, b) => (a.productId > b.productId ? 1 : -1))
+      .sort((a, b) => (a.productId > b.productId ? 1 : -1)),
   );
 
   const dispatch = useDispatch();
   const { removeFromCart, addOrder } = bindActionCreators(
     { ...CartActions, ...OrdersActions },
-    dispatch
+    dispatch,
   );
 
   const renderCartItem = ({ item }) => (

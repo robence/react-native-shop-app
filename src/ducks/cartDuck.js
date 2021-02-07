@@ -21,7 +21,7 @@ export default function cartReducer(state = initialState, action) {
           quantity + 1,
           price,
           title,
-          sum + price
+          sum + price,
         );
         return updateCartItem(state, id, updatedCartItem);
       }
@@ -37,7 +37,7 @@ export default function cartReducer(state = initialState, action) {
           quantity - 1,
           productPrice,
           productTitle,
-          sum - productPrice
+          sum - productPrice,
         );
         return updateCartItem(state, action.productId, updatedCartItem, true);
       }

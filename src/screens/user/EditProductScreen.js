@@ -31,7 +31,7 @@ const formReducer = (state, action) => {
       },
       formIsValid:
         Object.values(state.inputValidities).every(
-          (isInputValid) => isInputValid
+          (isInputValid) => isInputValid,
         ) && action.isValid,
     };
   }
@@ -84,11 +84,11 @@ export default function EditProductScreen({ navigation, route }) {
     try {
       if (!isEditing) {
         await dispatch(
-          createProduct({ title, imageUrl, description, price: +price })
+          createProduct({ title, imageUrl, description, price: +price }),
         );
       } else {
         await dispatch(
-          updateProduct({ id: productId, title, imageUrl, description })
+          updateProduct({ id: productId, title, imageUrl, description }),
         );
       }
       navigation.goBack();
@@ -129,7 +129,7 @@ export default function EditProductScreen({ navigation, route }) {
         input: inputIdentifier,
       });
     },
-    [dispatchFormState]
+    [dispatchFormState],
   );
 
   if (isLoading) {

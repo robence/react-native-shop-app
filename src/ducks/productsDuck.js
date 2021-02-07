@@ -25,7 +25,7 @@ export default function productsReducer(state = initialState, action) {
         userProducts: filterById(state.userProducts, action.productId),
         availableProducts: filterById(
           state.availableProducts,
-          action.productId
+          action.productId,
         ),
       };
 
@@ -37,7 +37,7 @@ export default function productsReducer(state = initialState, action) {
         title,
         imageUrl,
         description,
-        price
+        price,
       );
 
       return {
@@ -49,10 +49,10 @@ export default function productsReducer(state = initialState, action) {
     case UPDATE_PRODUCT:
       const { productId, productData } = action;
       const productIndex = state.userProducts.findIndex(
-        (product) => product.id === productId
+        (product) => product.id === productId,
       );
       const availableProductIndex = state.availableProducts.findIndex(
-        (product) => product.id === productId
+        (product) => product.id === productId,
       );
       const updatedProduct = new Product(
         productId,
@@ -60,7 +60,7 @@ export default function productsReducer(state = initialState, action) {
         productData.title,
         productData.imageUrl,
         productData.description,
-        state.userProducts[productIndex].price
+        state.userProducts[productIndex].price,
       );
 
       const updatedUserProducts = [...state.userProducts];
@@ -80,7 +80,7 @@ export default function productsReducer(state = initialState, action) {
 export const deleteProduct = (productId) => async (dispatch) => {
   const response = await fetch(
     `https://rn-complete-guide-a3ac3.firebaseio.com/products${productId}.json`,
-    { method: 'DELETE' }
+    { method: 'DELETE' },
   );
 
   if (!response.ok) {
@@ -104,7 +104,7 @@ export const createProduct = (payload) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ title, description, imageUrl, price }),
-    }
+    },
   );
 
   const resData = await response.json();
@@ -132,7 +132,7 @@ export const updateProduct = (payload) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ title, description, imageUrl }),
-    }
+    },
   );
 
   if (!response.ok) {
@@ -153,7 +153,7 @@ export const updateProduct = (payload) => async (dispatch) => {
 export const fetchProducts = () => async (dispatch) => {
   try {
     const response = await fetch(
-      'https://rn-complete-guide-a3ac3.firebaseio.com/products.json'
+      'https://rn-complete-guide-a3ac3.firebaseio.com/products.json',
     );
 
     if (!response.ok) {
@@ -167,7 +167,7 @@ export const fetchProducts = () => async (dispatch) => {
     for (const key in resData) {
       const { title, imageUrl, description, price } = resData[key];
       loadedProducts.push(
-        new Product(key, 'u1', title, imageUrl, description, price)
+        new Product(key, 'u1', title, imageUrl, description, price),
       );
     }
 
