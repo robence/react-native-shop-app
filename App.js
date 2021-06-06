@@ -7,7 +7,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 import store from './src/ducks/store';
-import ShopNavigator from './src/navigation';
+import { MainNavigator } from './src/navigation';
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -22,7 +22,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <ShopNavigator />
+        <MainNavigator />
       </NavigationContainer>
     </Provider>
   );

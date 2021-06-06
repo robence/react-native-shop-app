@@ -1,1 +1,1 @@
-export { default } from './ShopNavigator';
+export { default as MainNavigator } from './MainNavigator';
