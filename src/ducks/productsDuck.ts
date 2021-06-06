@@ -1,17 +1,32 @@
 import PRODUCTS from '../data/dummy-data';
 import Product from '../models/product';
+import type { RootState } from './store/rootState';
 
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
-const initialState = {
+export type ProductState = {
+  availableProducts: Product[];
+  userProducts: Product[];
+};
+
+const initialState: ProductState = {
   availableProducts: PRODUCTS,
   userProducts: PRODUCTS.filter((product) => product.ownerId === 'u1'),
 };
 
-export default function productsReducer(state = initialState, action) {
+type ProductAction =
+  | CreateProductAction
+  | DeleteProductAction
+  | UpdateProductAction
+  | FetchProductsAction;
+
+export default function productsReducer(
+  state: ProductState = initialState,
+  action: ProductAction,
+) {
   switch (action.type) {
     case SET_PRODUCTS:
       return {
@@ -77,7 +92,12 @@ export default function productsReducer(state = initialState, action) {
   }
 }
 
-export const deleteProduct = (productId) => async (dispatch) => {
+type DeleteProductAction = {
+  type: typeof DELETE_PRODUCT;
+  productId: string;
+};
+
+export const deleteProduct = (productId: string) => async (dispatch) => {
   const response = await fetch(
     `https://rn-complete-guide-a3ac3.firebaseio.com/products${productId}.json`,
     { method: 'DELETE' },
@@ -91,6 +111,17 @@ export const deleteProduct = (productId) => async (dispatch) => {
     type: DELETE_PRODUCT,
     productId,
   });
+};
+
+type CreateProductAction = {
+  type: typeof CREATE_PRODUCT;
+  productData: {
+    id: string;
+    title: string;
+    description: string;
+    imageUrl: string;
+    price: number;
+  };
 };
 
 export const createProduct = (payload) => async (dispatch) => {
@@ -119,6 +150,16 @@ export const createProduct = (payload) => async (dispatch) => {
       price,
     },
   });
+};
+
+type UpdateProductAction = {
+  type: typeof UPDATE_PRODUCT;
+  productId: string;
+  productData: {
+    title: string;
+    description: string;
+    imageUrl: string;
+  };
 };
 
 export const updateProduct = (payload) => async (dispatch) => {
@@ -150,6 +191,11 @@ export const updateProduct = (payload) => async (dispatch) => {
   });
 };
 
+type FetchProductsAction = {
+  type: typeof SET_PRODUCTS;
+  products: Product[];
+};
+
 export const fetchProducts = () => async (dispatch) => {
   try {
     const response = await fetch(
@@ -162,7 +208,7 @@ export const fetchProducts = () => async (dispatch) => {
 
     const resData = await response.json();
 
-    const loadedProducts = [];
+    const loadedProducts: Product[] = [];
 
     for (const key in resData) {
       const { title, imageUrl, description, price } = resData[key];
@@ -181,9 +227,18 @@ export const fetchProducts = () => async (dispatch) => {
   }
 };
 
-const filterById = (list, id) => list.filter((item) => item.id !== id);
+export const ProductActions = {
+  fetchProducts,
+  createProduct,
+  deleteProduct,
+  updateProduct,
+};
 
-export const getSelectedProduct = (id) => (state) =>
+const filterById = (list: { id: string }[], id: string) =>
+  list.filter((item) => item.id !== id);
+
+export const getSelectedProduct = (id: string) => (state: RootState) =>
   state.products.availableProducts.find((product) => product.id === id);
 
-export const getUserProducts = (state) => state.products.userProducts;
+export const getUserProducts = (state: RootState) =>
+  state.products.userProducts;

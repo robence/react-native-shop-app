@@ -5,8 +5,9 @@ import { bindActionCreators } from 'redux';
 
 import { ProductItem } from '../../components/shop';
 import { getUserProducts } from '../../ducks/productsDuck';
-import * as ProductActions from '../../ducks/productsDuck';
+import { ProductActions } from '../../ducks/productsDuck';
 import Colors from '../../constants/Colors';
+import Product from '../../models/product';
 
 export default function UserProductsScreen({ navigation }) {
   const userProducts = useSelector(getUserProducts);
@@ -14,7 +15,7 @@ export default function UserProductsScreen({ navigation }) {
 
   const { deleteProduct } = bindActionCreators(ProductActions, dispatch);
 
-  const onSelect = ({ id }) => {
+  const onSelect = ({ id }: Product) => {
     navigation.navigate('EditProductScreen', { id });
   };
 

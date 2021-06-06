@@ -18,7 +18,17 @@ import { Input } from '../../components/UI';
 import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
-const formReducer = (state, action) => {
+
+type FormInputAction = {
+  type: typeof FORM_INPUT_UPDATE;
+  value: any;
+  isValid: boolean;
+  input: string;
+};
+
+type FormAction = FormInputAction;
+
+const formReducer = (state, action: FormAction) => {
   if (action.type === FORM_INPUT_UPDATE) {
     return {
       inputValues: {
@@ -79,7 +89,7 @@ export default function EditProductScreen({ navigation, route }) {
       return;
     }
 
-    setError(false);
+    setError(null);
     setIsLoading(true);
     try {
       if (!isEditing) {

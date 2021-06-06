@@ -20,9 +20,9 @@ type InputBlurAction = {
   type: typeof INPUT_BLUR;
 };
 
-type InputActionType = InputChangeAction | InputBlurAction;
+type InputAction = InputChangeAction | InputBlurAction;
 
-const inputReducer = (state, action: InputActionType) => {
+const inputReducer = (state, action: InputAction) => {
   switch (action.type) {
     case INPUT_CHANGE:
       return {
@@ -54,7 +54,7 @@ type InputProps = {
   errorText: string;
   onInputChange: Function;
   initialValidity?: boolean;
-  initialValue: string;
+  initialValue?: string;
 } & FormValidationProps &
   TextInputProps;
 

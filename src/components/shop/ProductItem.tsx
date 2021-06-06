@@ -8,23 +8,46 @@ import {
   Platform,
 } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import PropTypes from 'prop-types';
 
 import { Card } from '../UI';
+import Product from '../../models/product';
 
-export default function ProductItem({ item, children, onSelect }) {
-  const { title, price, imageUrl } = item;
+type TouchableCmpProps = {
+  children: React.ReactNode;
+  onPress: () => void;
+};
 
-  let TouchableCmp = TouchableOpacity;
-
+function TouchableCmp(props: TouchableCmpProps) {
+  const { children, onPress } = props;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableCmp = TouchableNativeFeedback;
+    return (
+      <TouchableNativeFeedback onPress={onPress} useForeground>
+        {children}
+      </TouchableNativeFeedback>
+    );
   }
+
+  return (
+    <TouchableOpacity activeOpacity={0.6} onPress={onPress}>
+      {children}
+    </TouchableOpacity>
+  );
+}
+
+type ProductItemProps = {
+  item: Product;
+  onSelect: () => void;
+  children: React.ReactNode;
+};
+
+export default function ProductItem(props: ProductItemProps) {
+  const { item, children, onSelect } = props;
+  const { title, price, imageUrl } = item;
 
   return (
     <Card style={styles.product}>
       <View style={styles.touchable}>
-        <TouchableCmp activeOpacity={0.6} onPress={onSelect} useForeground>
+        <TouchableCmp onPress={onSelect}>
           <View>
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={{ uri: imageUrl }} />
@@ -40,18 +63,6 @@ export default function ProductItem({ item, children, onSelect }) {
     </Card>
   );
 }
-
-ProductItem.propTypes = {
-  item: PropTypes.shape({
-    id: PropTypes.string,
-    ownerId: PropTypes.string,
-    title: PropTypes.string,
-    imageUrl: PropTypes.string,
-    description: PropTypes.string,
-    price: PropTypes.number,
-  }).isRequired,
-  onSelect: PropTypes.func.isRequired,
-};
 
 const styles = StyleSheet.create({
   product: {
