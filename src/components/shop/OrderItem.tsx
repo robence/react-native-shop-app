@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import PropTypes from 'prop-types';
 
 import CartItem from './CartItem';
 import Colors from '../../constants/Colors';
 import { Card } from '../UI';
+import Order from '../../models/order';
 
-export default function OrderItem({ order }) {
+type OrderItemProps = {
+  order: Order;
+};
+
+export default function OrderItem({ order }: OrderItemProps) {
   const [showDetails, setShowDetails] = useState(false);
 
   const { items, totalAmount: amount } = order;
@@ -25,6 +29,7 @@ export default function OrderItem({ order }) {
       {showDetails && (
         <View style={styles.detailItems}>
           {items.map((cartItem) => (
+            // TOOD: investigate id
             <CartItem key={cartItem.productId} item={cartItem} />
           ))}
         </View>
@@ -32,23 +37,6 @@ export default function OrderItem({ order }) {
     </Card>
   );
 }
-
-OrderItem.propTypes = {
-  order: PropTypes.shape({
-    date: PropTypes.instanceOf(Date),
-    id: PropTypes.string,
-    items: PropTypes.arrayOf(
-      PropTypes.shape({
-        productId: PropTypes.string,
-        productPrice: PropTypes.number,
-        productTitle: PropTypes.string,
-        quantity: PropTypes.number,
-        sum: PropTypes.number,
-      }),
-    ),
-    totalAmount: PropTypes.number,
-  }).isRequired,
-};
 
 const styles = StyleSheet.create({
   orderItem: {

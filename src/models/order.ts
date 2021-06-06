@@ -1,7 +1,14 @@
 import moment from 'moment';
 
+import Product from './product';
+
 export default class Order {
-  constructor(id, items, totalAmount, date) {
+  id: string;
+  items: Product[];
+  totalAmount: number;
+  date: Date;
+
+  constructor(id: string, items: Product[], totalAmount: number, date: Date) {
     this.id = id;
     this.items = items;
     this.totalAmount = totalAmount;
