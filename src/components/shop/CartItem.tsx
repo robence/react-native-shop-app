@@ -12,7 +12,7 @@ import CartItemModel from '../../models/cart-item';
 
 type CartItemProps = {
   item: CartItemModel;
-  onRemove: () => void;
+  onRemove?: () => void;
 };
 
 export default function CartItem({ item, onRemove }: CartItemProps) {
