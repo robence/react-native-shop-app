@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, ActivityIndicator, View, StyleSheet } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { OrderItem } from '../../components/shop';
-import * as OrdersActions from '../../ducks/ordersDuck';
+import { OrdersActions, selectOrders } from '../../ducks/ordersDuck';
 import Colors from '../../constants/Colors';
+import { useAppDispatch } from '../../ducks/store/store';
 
 export default function OrdersScreen() {
   const [isLoading, setItLoading] = useState(false);
 
-  const orders = useSelector((state) => state.orders.orders);
-  const dispatch = useDispatch();
+  const orders = useSelector(selectOrders);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(OrdersActions.fetchOrders()).then(() => {
       setItLoading(false);
     });

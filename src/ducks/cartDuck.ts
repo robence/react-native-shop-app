@@ -1,16 +1,32 @@
 import CartItem from '../models/cart-item';
+import Product from '../models/product';
 import { ADD_ORDER } from './ordersDuck';
 import { DELETE_PRODUCT } from './productsDuck';
+import type { RootAction } from './store/rootState';
 
 const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 
-const initialState = {
+type CartItemObject = {
+  [key: string]: CartItem;
+};
+
+export type CartState = {
+  items: CartItemObject;
+  totalAmount: number;
+};
+
+const initialState: CartState = {
   items: {},
   totalAmount: 0,
 };
 
-export default function cartReducer(state = initialState, action) {
+export type CartAction = AddToCartAction | RemoveFromCartAction;
+
+export default function cartReducer(
+  state: CartState = initialState,
+  action: RootAction,
+) {
   switch (action.type) {
     case ADD_TO_CART:
       const { id, price, title } = action.product;
@@ -68,7 +84,12 @@ export default function cartReducer(state = initialState, action) {
   }
 }
 
-function updateCartItem(state, id, newItem, isSubtract = false) {
+function updateCartItem(
+  state: CartState,
+  id: string,
+  newItem: CartItem,
+  isSubtract = false,
+) {
   return {
     ...state,
     items: {
@@ -81,12 +102,22 @@ function updateCartItem(state, id, newItem, isSubtract = false) {
   };
 }
 
-export const addToCart = (product) => ({
+type AddToCartAction = {
+  type: typeof ADD_TO_CART;
+  product: Product;
+};
+
+export const addToCart = (product: Product) => ({
   type: ADD_TO_CART,
   product,
 });
 
-export const removeFromCart = (productId) => ({
+type RemoveFromCartAction = {
+  type: typeof REMOVE_FROM_CART;
+  productId: string;
+};
+
+export const removeFromCart = (productId: string) => ({
   type: REMOVE_FROM_CART,
   productId,
 });

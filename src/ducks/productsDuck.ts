@@ -17,7 +17,7 @@ const initialState: ProductState = {
   userProducts: PRODUCTS.filter((product) => product.ownerId === 'u1'),
 };
 
-type ProductAction =
+export type ProductAction =
   | CreateProductAction
   | DeleteProductAction
   | UpdateProductAction
@@ -234,7 +234,7 @@ export const ProductActions = {
   updateProduct,
 };
 
-const filterById = (list: { id: string }[], id: string) =>
+const filterById = (list: Product[], id: string) =>
   list.filter((item) => item.id !== id);
 
 export const getSelectedProduct = (id: string) => (state: RootState) =>
