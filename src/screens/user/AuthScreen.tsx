@@ -11,9 +11,17 @@ export default function AuthScreen() {
       style={styles.screen}
     >
       <ScrollView>
-        <Input id="email" label="E-mail">
-          Hello
-        </Input>
+        <Input
+          id="email"
+          label="E-mail"
+          keyboardType="email-address"
+          required
+          email
+          autoCapitalize="none"
+          errorText="Please enter a valid email address."
+          onInputChange={() => {}}
+          initialValue=""
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );
