@@ -147,13 +147,14 @@ function UserNavigator() {
 
 const Drawer = createDrawerNavigator();
 
-const MyDrawerIcon = (iconName) => (drawerConfig) => (
-  <Ionicons
-    name={Platform.OS === 'android' ? `md-${iconName}` : `ios-${iconName}`}
-    size={23}
-    color={drawerConfig.color}
-  />
-);
+const MyDrawerIcon = (iconName) => (drawerConfig) =>
+  (
+    <Ionicons
+      name={Platform.OS === 'android' ? `md-${iconName}` : `ios-${iconName}`}
+      size={23}
+      color={drawerConfig.color}
+    />
+  );
 
 export default function ShopNavigator() {
   return (
