@@ -4,7 +4,7 @@ import ShopNavigator from './ShopNavigator';
 import AuthNavigator from './AuthNavigator';
 
 export default function MainNavigator() {
-  const isLoggedIn = false;
+  const isLoggedIn = true;
 
   if (!isLoggedIn) {
     return <AuthNavigator />;
