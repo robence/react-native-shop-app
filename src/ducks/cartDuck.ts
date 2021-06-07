@@ -35,6 +35,7 @@ export default function cartReducer(
         const { quantity, sum } = state.items[id];
         const updatedCartItem = new CartItem(
           quantity + 1,
+          id,
           price,
           title,
           sum + price,
@@ -42,15 +43,21 @@ export default function cartReducer(
         return updateCartItem(state, id, updatedCartItem);
       }
 
-      return updateCartItem(state, id, new CartItem(1, price, title, price));
+      return updateCartItem(
+        state,
+        id,
+        new CartItem(1, id, price, title, price),
+      );
 
     case REMOVE_FROM_CART:
-      const currentItem = state.items[action.productId];
+      const productId = action.productId;
+      const currentItem = state.items[productId];
       const { quantity, productPrice, productTitle, sum } = currentItem;
 
       if (quantity > 1) {
         const updatedCartItem = new CartItem(
           quantity - 1,
+          productId,
           productPrice,
           productTitle,
           sum - productPrice,

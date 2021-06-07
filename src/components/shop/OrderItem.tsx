@@ -29,7 +29,6 @@ export default function OrderItem({ order }: OrderItemProps) {
       {showDetails && (
         <View style={styles.detailItems}>
           {items.map((cartItem) => (
-            // TOOD: investigate id
             <CartItem key={cartItem.productId} item={cartItem} />
           ))}
         </View>
