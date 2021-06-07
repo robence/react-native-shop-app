@@ -7,12 +7,8 @@ import type { RootAction } from './store/rootState';
 const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 
-type CartItemObject = {
-  [key: string]: CartItem;
-};
-
 export type CartState = {
-  items: CartItemObject;
+  items: Record<string, CartItem>;
   totalAmount: number;
 };
 
