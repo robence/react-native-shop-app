@@ -13,8 +13,9 @@ import { bindActionCreators } from 'redux';
 
 import { ProductItem } from '../../components/shop';
 import Colors from '../../constants/Colors';
-import * as CartActions from '../../ducks/cartDuck';
-import * as ProductActions from '../../ducks/productsDuck';
+import { CartActions } from '../../ducks/cartDuck';
+import { ProductActions } from '../../ducks/productsDuck';
+import type { RootState } from '../../ducks/store/rootState';
 
 export default function ProductsOverviewScreen() {
   const navigation = useNavigation();
@@ -23,7 +24,9 @@ export default function ProductsOverviewScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
 
-  const products = useSelector((state) => state.products.availableProducts);
+  const products = useSelector(
+    (state: RootState) => state.products.availableProducts,
+  );
   const dispatch = useDispatch();
   const { addToCart } = bindActionCreators(CartActions, dispatch);
 
@@ -72,7 +75,7 @@ export default function ProductsOverviewScreen() {
   if (!isLoading && products.length === 0) {
     return (
       <View style={styles.centered}>
-        <Text style={{}}>No products found. Maybe start adding some!</Text>
+        <Text>No products found. Maybe start adding some!</Text>
       </View>
     );
   }

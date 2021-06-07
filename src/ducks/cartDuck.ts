@@ -21,7 +21,9 @@ const initialState: CartState = {
   totalAmount: 0,
 };
 
-export type CartAction = AddToCartAction | RemoveFromCartAction;
+export type CartAction =
+  | ReturnType<typeof addToCart>
+  | ReturnType<typeof removeFromCart>;
 
 export default function cartReducer(
   state: CartState = initialState,
@@ -109,22 +111,19 @@ function updateCartItem(
   };
 }
 
-type AddToCartAction = {
-  type: typeof ADD_TO_CART;
-  product: Product;
+export const addToCart = (product: Product) =>
+  ({
+    type: ADD_TO_CART,
+    product,
+  } as const);
+
+export const removeFromCart = (productId: string) =>
+  ({
+    type: REMOVE_FROM_CART,
+    productId,
+  } as const);
+
+export const CartActions = {
+  addToCart,
+  removeFromCart,
 };
-
-export const addToCart = (product: Product) => ({
-  type: ADD_TO_CART,
-  product,
-});
-
-type RemoveFromCartAction = {
-  type: typeof REMOVE_FROM_CART;
-  productId: string;
-};
-
-export const removeFromCart = (productId: string) => ({
-  type: REMOVE_FROM_CART,
-  productId,
-});

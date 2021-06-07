@@ -12,15 +12,19 @@ import { bindActionCreators } from 'redux';
 
 import Colors from '../../constants/Colors';
 import { CartItem } from '../../components/shop';
-import * as CartActions from '../../ducks/cartDuck';
-import * as OrdersActions from '../../ducks/ordersDuck';
+import { CartActions } from '../../ducks/cartDuck';
+import { OrdersActions } from '../../ducks/ordersDuck';
 import { Card } from '../../components/UI';
+import type { RootState } from '../../ducks/store/rootState';
 
 export default function CartScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
-  const cartItems = useSelector((state) =>
+  const cartTotalAmount = useSelector(
+    (state: RootState) => state.cart.totalAmount,
+  );
+
+  const cartItems = useSelector((state: RootState) =>
     Object.entries(state.cart.items)
       .map(([key, value]) => ({
         productId: key,
@@ -51,7 +55,7 @@ export default function CartScreen() {
         <Text style={styles.summaryText}>
           Total:{' '}
           <Text style={styles.amount}>
-            ${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}
+            ${Math.round(Number(cartTotalAmount.toFixed(2)) * 100) / 100}
           </Text>
         </Text>
         {isLoading ? (

@@ -12,9 +12,9 @@ import { bindActionCreators } from 'redux';
 
 import { getSelectedProduct } from '../../ducks/productsDuck';
 import Colors from '../../constants/Colors';
-import * as CartActions from '../../ducks/cartDuck';
+import { CartActions } from '../../ducks/cartDuck';
 
-export default function ProductDetailScreen({ navigation, route }) {
+export default function ProductDetailScreen({ route }) {
   const { id } = route.params;
 
   const selectedProduct = useSelector(getSelectedProduct(id));

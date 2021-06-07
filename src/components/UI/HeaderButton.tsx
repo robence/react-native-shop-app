@@ -1,11 +1,14 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { HeaderButton } from 'react-navigation-header-buttons';
+import {
+  HeaderButton,
+  HeaderButtonProps,
+} from 'react-navigation-header-buttons';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../../constants/Colors';
 
-export default function CustomHeaderButton(props) {
+export default function CustomHeaderButton(props: HeaderButtonProps) {
   return (
     <HeaderButton
       {...props}
